@@ -16,7 +16,7 @@ jobs:
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'ghcr.io/wonderfall/nextcloud'
+          image-ref: 'ghcr.io/hoellen/nextcloud'
           format: 'template'
           template: '@/contrib/sarif.tpl'
           output: 'trivy-results.sarif'

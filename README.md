@@ -1,4 +1,4 @@
-# wonderfall/nextcloud
+# hoellen/nextcloud
 *The self-hosted productivity platform that keeps you in control.*
 
 Nextcloud [official website](https://nextcloud.com/) and [source code](https://github.com/nextcloud).
@@ -28,7 +28,7 @@ You're free to make your own image based on this one if you want a specific feat
 - `x` : latest Nextcloud x.x (e.g. `21`)
 - `x.x.x` : Nextcloud x.x.x (e.g. `21.0.2`)
 
-You can always have a glance [here](https://github.com/users/Wonderfall/packages/container/package/nextcloud).
+You can always have a glance [here](https://github.com/users/hoellen/packages/container/package/nextcloud).
 Only the **latest stable version** will be maintained by myself.
 
 ## Build-time variables
@@ -45,7 +45,7 @@ Only the **latest stable version** will be maintained by myself.
 | **UID**                     | user id (default: 1000)    |
 | **GID**                     | group id (default: 1000)   |
 
-For convenience they were put at [the very top of the Dockerfile](https://github.com/Wonderfall/docker-nextcloud/blob/main/Dockerfile#L1-L13) and their usage should be quite explicit if you intend to build this image yourself.
+For convenience they were put at [the very top of the Dockerfile](https://github.com/hoellen/docker-nextcloud/blob/master/Dockerfile#L1-L13) and their usage should be quite explicit if you intend to build this image yourself.
 
 ## Environment variables (Dockerfile)
 
@@ -101,7 +101,7 @@ From now on you'll need to make sure all volumes have proper permissions. The de
 Other changes that should be reflected in your configuration files:
 - `/config` volume is now `/nextcloud/config`
 - `/apps2` volume is now `/nextcloud/apps2`
-- `ghcr.io/wonderfall/nextcloud` is the new image location
+- `ghcr.io/hoellen/nextcloud` is the new image location
 
 You should edit your `docker-compose.yml` and `config.php` accordingly.
 
