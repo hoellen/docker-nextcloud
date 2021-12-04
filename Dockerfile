@@ -28,6 +28,7 @@ RUN apk -U upgrade \
         libzip-dev \
         openldap-dev \
         postgresql-dev \
+        imagemagick-dev \
         zlib-dev \
  && apk --no-cache add \
         freetype \
@@ -39,6 +40,8 @@ RUN apk -U upgrade \
         libwebp \
         libzip \
         openldap \
+	      libgomp \
+        imagemagick \
         zlib \
  && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
  && docker-php-ext-configure ldap \
@@ -56,7 +59,10 @@ RUN apk -U upgrade \
         gmp \
  && pecl install APCu \
  && pecl install redis \
- && echo "extension=redis.so" > /usr/local/etc/php/conf.d/redis.ini \
+ && pecl install imagick \
+ && docker-php-ext-enable \
+        redis \
+        imagick \
  && apk del build-deps \
  && rm -rf /var/cache/apk/*
 
