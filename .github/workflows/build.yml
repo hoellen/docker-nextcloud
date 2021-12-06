@@ -6,7 +6,7 @@ on:
     branches: [ master ]
   schedule:
     # Build the image regularly (each Friday)
-    - cron: '05 55 * * 5'
+    - cron: '23 04 * * 5'
 
 jobs:
   build:
