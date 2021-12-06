@@ -3,10 +3,10 @@ name: build
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ master ]
   schedule:
     # Build the image regularly (each Friday)
-    - cron: '13 23 * * 5'
+    - cron: '05 55 * * 5'
 
 jobs:
   build:
@@ -34,10 +34,10 @@ jobs:
           severity: 'CRITICAL,HIGH'
           vuln-type: "os"
 
-#      - name: Upload Trivy scan results to GitHub Security tab
-#        uses: github/codeql-action/upload-sarif@v1
-#        with:
-#          sarif_file: 'trivy-results.sarif'
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: 'trivy-results.sarif'
 
       - name: Login to the registry
         run: >-
