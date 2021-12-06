@@ -4,7 +4,7 @@
 Nextcloud [official website](https://nextcloud.com/) and [source code](https://github.com/nextcloud).
 
 ## Why this image?
-This non-official image is intended as an **all-in-one** (as in monolithic) Nextcloud **production** image. If you're not sure you want this image, you should probably use [the official image](https://hub.docker.com/r/nextcloud).
+This non-official image is intended as an **all-in-one** (as in monolithic) Nextcloud **production** image. It is based on the [Wondefall/docker-nextcloud](https://github.com/Wonderfall/docker-nextcloud) image. If you're not sure you want this image, you should probably use [the official image](https://hub.docker.com/r/nextcloud).
 
 ## Security
 Don't run random images from random dudes on the Internet. Ideally, you want to maintain and build it yourself.
