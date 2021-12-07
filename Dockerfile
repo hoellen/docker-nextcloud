@@ -28,6 +28,7 @@ RUN apk -U upgrade \
         libzip-dev \
         openldap-dev \
         postgresql-dev \
+        samba-dev \
         imagemagick-dev \
         zlib-dev \
  && apk --no-cache add \
@@ -39,6 +40,7 @@ RUN apk -U upgrade \
         libpq \
         libwebp \
         libzip \
+        libsmbclient \
         openldap \
 	      libgomp \
         imagemagick \
@@ -57,10 +59,12 @@ RUN apk -U upgrade \
         pdo_pgsql \
         zip \
         gmp \
+ && pecl install smbclient \
  && pecl install APCu \
  && pecl install redis \
  && pecl install imagick \
  && docker-php-ext-enable \
+        smbclient \
         redis \
         imagick \
  && apk del build-deps \
