@@ -19,9 +19,9 @@ jobs:
       - name: Build an image from Dockerfile
         run: |
           docker build \
-              -t ghcr.io/hoellen/nextcloud \
-              -t ghcr.io/hoellen/nextcloud:$(grep -oP '(?<=NEXTCLOUD_VERSION=).*' Dockerfile | head -c6) \
-              -t ghcr.io/hoellen/nextcloud:$(grep -oP '(?<=NEXTCLOUD_VERSION=).*' Dockerfile | head -c2) \
+              -t ghcr.io/${{ github.actor }}/nextcloud \
+              -t ghcr.io/${{ github.actor }}/nextcloud:$(grep -oP '(?<=NEXTCLOUD_VERSION=).*' Dockerfile | head -c6) \
+              -t ghcr.io/${{ github.actor }}/nextcloud:$(grep -oP '(?<=NEXTCLOUD_VERSION=).*' Dockerfile | head -c2) \
               .
 
       - name: Run Trivy vulnerability scanner
@@ -46,6 +46,6 @@ jobs:
 
       - name: Push image to GitHub
         run: |
-          docker push ghcr.io/hoellen/nextcloud
-          docker push ghcr.io/hoellen/nextcloud:$(grep -oP '(?<=NEXTCLOUD_VERSION=).*' Dockerfile | head -c6)
-          docker push ghcr.io/hoellen/nextcloud:$(grep -oP '(?<=NEXTCLOUD_VERSION=).*' Dockerfile | head -c2)
+          docker push ghcr.io/${{ github.actor }}/nextcloud
+          docker push ghcr.io/${{ github.actor }}/nextcloud:$(grep -oP '(?<=NEXTCLOUD_VERSION=).*' Dockerfile | head -c6)
+          docker push ghcr.io/${{ github.actor }}/nextcloud:$(grep -oP '(?<=NEXTCLOUD_VERSION=).*' Dockerfile | head -c2)
