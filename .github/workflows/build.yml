@@ -3,7 +3,7 @@ name: build
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ version-22 ]
   schedule:
     # Build the image regularly (each Friday)
     - cron: '23 04 * * 5'
@@ -19,15 +19,14 @@ jobs:
       - name: Build an image from Dockerfile
         run: |
           docker build \
-              -t ghcr.io/hoellen/nextcloud \
-              -t ghcr.io/hoellen/nextcloud:$(grep -oP '(?<=NEXTCLOUD_VERSION=).*' Dockerfile | head -c6) \
-              -t ghcr.io/hoellen/nextcloud:$(grep -oP '(?<=NEXTCLOUD_VERSION=).*' Dockerfile | head -c2) \
+              -t ghcr.io/${{ github.actor }}/nextcloud:$(grep -oP '(?<=NEXTCLOUD_VERSION=).*' Dockerfile | head -c6) \
+              -t ghcr.io/${{ github.actor }}/nextcloud:$(grep -oP '(?<=NEXTCLOUD_VERSION=).*' Dockerfile | head -c2) \
               .
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'ghcr.io/hoellen/nextcloud'
+          image-ref: 'ghcr.io/${{ github.actor }}/nextcloud'
           format: 'template'
           template: '@/contrib/sarif.tpl'
           output: 'trivy-results.sarif'
@@ -46,6 +45,5 @@ jobs:
 
       - name: Push image to GitHub
         run: |
-          docker push ghcr.io/hoellen/nextcloud
-          docker push ghcr.io/hoellen/nextcloud:$(grep -oP '(?<=NEXTCLOUD_VERSION=).*' Dockerfile | head -c6)
-          docker push ghcr.io/hoellen/nextcloud:$(grep -oP '(?<=NEXTCLOUD_VERSION=).*' Dockerfile | head -c2)
+          docker push ghcr.io/${{ github.actor }}/nextcloud:$(grep -oP '(?<=NEXTCLOUD_VERSION=).*' Dockerfile | head -c6)
+          docker push ghcr.io/${{ github.actor }}/nextcloud:$(grep -oP '(?<=NEXTCLOUD_VERSION=).*' Dockerfile | head -c2)
