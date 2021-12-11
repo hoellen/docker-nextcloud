@@ -1,9 +1,6 @@
 # -------------- Build-time variables --------------
 ARG NEXTCLOUD_VERSION=23.0.0
-ARG PHP_VERSION=8.0
-ARG NGINX_VERSION=1.20
 
-ARG ALPINE_VERSION=3.15
 ARG HARDENED_MALLOC_VERSION=8
 
 ARG UID=1000
@@ -11,7 +8,7 @@ ARG GID=1000
 # ---------------------------------------------------
 
 ### Build PHP base
-FROM php:${PHP_VERSION}-fpm-alpine${ALPINE_VERSION} as base
+FROM php:8.0.13-fpm-alpine3.15 as base
 
 ARG APCU_VERSION
 ARG REDIS_VERSION
@@ -72,8 +69,7 @@ RUN apk -U upgrade \
 
 
 ### Build Hardened Malloc
-ARG ALPINE_VERSION
-FROM alpine:${ALPINE_VERSION} as build-malloc
+FROM alpine:3.15.0 as build-malloc
 
 ARG HARDENED_MALLOC_VERSION
 ARG CONFIG_NATIVE=false
@@ -86,7 +82,7 @@ RUN apk --no-cache add build-base git gnupg && cd /tmp \
 
 
 ### Fetch nginx
-FROM nginx:${NGINX_VERSION}-alpine as nginx
+FROM nginx:1.20.2-alpine as nginx
 
 
 ### Build Nextcloud (production environemnt)

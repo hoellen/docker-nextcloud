@@ -1,0 +1,28 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: daily
+      time: "04:00"
+    reviewers:
+      - "hoellen"
+    pull-request-branch-name:
+      separator: "-"
+    open-pull-requests-limit: 10
+  - package-ecosystem: docker
+    directory: "/"
+    schedule:
+      interval: daily
+      time: "04:00"
+    target-branch: "master"
+    reviewers:
+      - "hoellen"
+    ignore:
+      - dependency-name: "php"
+        update-types: ["version-update:semver-major","version-update:semver-minor"]
+      - dependency-name: "nginx"
+        update-types: ["version-update:semver-major","version-update:semver-minor"]
+    pull-request-branch-name:
+      separator: "-"
+    open-pull-requests-limit: 10
