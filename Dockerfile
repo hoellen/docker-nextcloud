@@ -149,8 +149,9 @@ VOLUME /data /nextcloud/config /nextcloud/apps2 /nextcloud/themes
 
 EXPOSE 8888
 
-LABEL description="A server software for creating file hosting services" \
-      nextcloud="Nextcloud v${NEXTCLOUD_VERSION}" \
-      maintainer="Hoellen <dev@hoellen.eu>"
+LABEL org.opencontainers.image.description="A server software for creating file hosting services" \
+      org.opencontainers.image.version="${NEXTCLOUD_VERSION}" \
+      org.opencontainers.image.authors="Hoellen <dev@hoellen.eu>" \
+      org.opencontainers.image.source="https://github.com/hoellen/docker-nextcloud"
 
 CMD ["run.sh"]
