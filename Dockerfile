@@ -111,11 +111,10 @@ ENV UPLOAD_MAX_SIZE=10G \
     CRON_MEMORY_LIMIT=1g \
     DB_TYPE=sqlite3 \
     DOMAIN=localhost \
-    LD_PRELOAD="/usr/local/lib/libhardened_malloc-light.so /usr/lib/preloadable_libiconv.so"
+    LD_PRELOAD="/usr/local/lib/libhardened_malloc-light.so"
 
 RUN apk --no-cache add \
         gnupg \
-        gnu-libiconv \
         pcre \
         s6 \
  && NEXTCLOUD_TARBALL="nextcloud-${NEXTCLOUD_VERSION}.tar.bz2" && cd /tmp \
