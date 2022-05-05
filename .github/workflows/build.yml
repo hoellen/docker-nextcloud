@@ -3,7 +3,7 @@ name: build
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ version-23 ]
   schedule:
     # Build the image regularly (each Friday)
     - cron: '23 04 * * 5'
@@ -19,7 +19,6 @@ jobs:
       - name: Build an image from Dockerfile
         run: |
           docker build \
-              -t ghcr.io/${{ github.actor }}/nextcloud \
               -t ghcr.io/${{ github.actor }}/nextcloud:$(grep -oP '(?<=NEXTCLOUD_VERSION=).*' Dockerfile | head -c6) \
               -t ghcr.io/${{ github.actor }}/nextcloud:$(grep -oP '(?<=NEXTCLOUD_VERSION=).*' Dockerfile | head -c2) \
               .
@@ -46,6 +45,6 @@ jobs:
 
       - name: Push image to GitHub
         run: |
-          docker push ghcr.io/${{ github.actor }}/nextcloud
           docker push ghcr.io/${{ github.actor }}/nextcloud:$(grep -oP '(?<=NEXTCLOUD_VERSION=).*' Dockerfile | head -c6)
           docker push ghcr.io/${{ github.actor }}/nextcloud:$(grep -oP '(?<=NEXTCLOUD_VERSION=).*' Dockerfile | head -c2)
+
