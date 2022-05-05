@@ -3,71 +3,115 @@
 
 Nextcloud [official website](https://nextcloud.com/) and [source code](https://github.com/nextcloud).
 
-## Why this image?
-This non-official image is intended as an **all-in-one** (as in monolithic) Nextcloud **production** image. It is based on the [Wondefall/docker-nextcloud](https://github.com/Wonderfall/docker-nextcloud) image. If you're not sure you want this image, you should probably use [the official image](https://hub.docker.com/r/nextcloud).
+## About
+This non-official image is intended as an **all-in-one** (as in monolithic) Nextcloud **production** image. If you're not sure you want this image, you should probably use [the official image](https://hub.docker.com/r/nextcloud). The main goal is to provide an easy-to-use image with decent security standards. This repository is mainly based on [Wondefall/docker-nextcloud](https://github.com/Wonderfall/docker-nextcloud). 
 
-## Security
-Don't run random images from random dudes on the Internet. Ideally, you want to maintain and build it yourself.
+Check out Nextcloud [official website](https://nextcloud.com/) and [source code](https://github.com/nextcloud).
 
-Images are scanned every day by [Trivy](https://github.com/aquasecurity/trivy) for OS vulnerabilities. Latest tag/version is automatically built weekly, so you should often update your images regardless if you're already using the latest Nextcloud version.
+___
 
-If you're building manually, you should always build production images without cache (use `docker build --no-cache` for instance). Latest dependencies will hence be used instead of outdated ones due to a cached layer.
+* [Features](#features)
+* [Security](#security)
+* [Tags](#tags)
+* [Build-time variables](#build-time-variables)
+* [Environment variables](#environment-variables)
+  * [Runtime](#runtime)
+  * [Startup](#startup)
+* [Volumes](#volumes)
+* [Ports](#ports)
+* [Migration](#migration)
+* [Usage](#usage)
 
 ## Features
+
+- Based on [Alpine Linux](https://alpinelinux.org/).
 - Fetching PHP/nginx from their official images.
 - **Rootless**: no privilege at any time, even at startup.
-- Includes **hardened_malloc**, a hardened memory allocator.
+- Uses [s6](https://skarnet.org/software/s6/) as a lightweight process supervisor.
+- Supports MySQL/MariaDB, PostgresQL and SQLite3 database backends.
+- Includes OPcache and APCu for improved caching & performance, also supports redis.
+- Tarball integrity & authenticity checked during build process.
+- Includes **hardened_malloc**, [a hardened memory allocator](https://github.com/GrapheneOS/hardened_malloc).
+- Includes **Snuffleupagus**, [a PHP security module](https://github.com/jvoisin/snuffleupagus).
 - Includes a simple **built-in cron** system.
 - Much easier to maintain thanks to multi-stages build.
 - Does not include imagick, samba, etc. by default.
 
 You're free to make your own image based on this one if you want a specific feature. Uncommon features won't be included as they can increase attack surface: this image intends to stay **minimal**, but **functional enough** to cover basic needs.
 
+## Security
+
+Don't run random images from random dudes on the Internet. Ideally, you want to maintain and build it yourself.
+
+- **Images are scanned every day** by [Trivy](https://github.com/aquasecurity/trivy) for OS vulnerabilities. Known vulnerabilities will be automatically uploaded to [GitHub Security Lab](https://github.com/Wonderfall/docker-nextcloud/security/code-scanning) for full transparency. This also warns me if I have to take action to fix a vulnerability. 
+- **Latest tag/version is automatically built weekly**, so you should often update your images regardless if you're already using the latest Nextcloud version.
+- **Build production images without cache** (use `docker build --no-cache` for instance) if you want to build your images manually. Latest dependencies will hence be used instead of outdated ones due to a cached layer.
+- **A security module for PHP called [Snuffleupagus](https://github.com/jvoisin/snuffleupagus) is used by default**. This module aims at killing entire bug and security exploit classes (including XXE, weak PRNG, file-upload based code execution), thus raising the cost of attacks. For now we're using a configuration file derived from [the default one](https://github.com/jvoisin/snuffleupagus/blob/master/config/default_php8.rules), with some explicit exceptions related to Nextcloud. This configuration file is tested and shouldn't break basic functionality, but it can cause issues in specific and untested use cases: if that happens to you, get logs from either `syslog` or `/nginx/logs/error.log` inside the container, and [open an issue](https://github.com/hoellen/docker-nextcloud/issues). You can also disable the security module altogether by changing the `PHP_HARDENING` environment variable to `false` before recreating the container.
+- **Images are signed with the GitHub-provided OIDC token in Actions** using the experimental "keyless" signing feature provided by [cosign](https://github.com/sigstore/cosign). You can verify the image signature using `cosign` as well:
+
+```
+COSIGN_EXPERIMENTAL=true cosign verify ghcr.io/hoellen/nextcloud
+```
+
+Verifying the signature isn't a requirement, and might not be as seamless as using *Docker Content Trust* (which is not supported by GitHub's OCI registry). However, it's strongly recommended to do so in a sensitive environment to ensure the authenticity of the images and further limit the risk of supply chain attacks.
+
 ## Tags
+
 - `latest` : latest Nextcloud version
-- `x` : latest Nextcloud x.x (e.g. `21`)
-- `x.x.x` : Nextcloud x.x.x (e.g. `21.0.2`)
+- `x` : latest Nextcloud x.x (e.g. `24`)
+- `x.x.x` : Nextcloud x.x.x (e.g. `24.0.0`)
 
 You can always have a glance [here](https://github.com/users/hoellen/packages/container/package/nextcloud).
 Only the **latest stable version** will be maintained by myself.
 
+*Note: automated builds only target `linux/amd64` (x86_64). There is no technical reason preventing the image to be built for `arm64` (in fact you can build it yourself), but GitHub Actions runners are limited in memory, and this limit makes it currently impossible to target both platforms.*
+
 ## Build-time variables
-|          Variable           |         Description        |
-| --------------------------- | -------------------------- |
-| **NEXTCLOUD_VERSION**       | version of Nextcloud       |
-| **ALPINE_VERSION**          | version of Alpine Linux    |
-| **PHP_VERSION**             | version of PHP             |
-| **NGINX_VERSION**           | version of nginx           |
-| **APCU_VERSION**            | version of APCu (php ext)  |
-| **REDIS_VERSION**           | version of redis (php ext) |
-| **HARDENED_MALLOC_VERSION** | version of hardened_malloc |
-| **CONFIG_NATIVE**           | native code for hmalloc    |
-| **UID**                     | user id (default: 1000)    |
-| **GID**                     | group id (default: 1000)   |
 
-For convenience they were put at [the very top of the Dockerfile](https://github.com/hoellen/docker-nextcloud/blob/master/Dockerfile#L1-L13) and their usage should be quite explicit if you intend to build this image yourself.
+|          Variable           |               Description              |       Default      |
+| --------------------------- | -------------------------------------- | ------------------ |
+| **NEXTCLOUD_VERSION**       | version of Nextcloud                   |          *         |
+| **ALPINE_VERSION**          | version of Alpine Linux                |          *         |
+| **PHP_VERSION**             | version of PHP                         |          *         |
+| **NGINX_VERSION**           | version of nginx                       |          *         |
+| **HARDENED_MALLOC_VERSION** | version of hardened_malloc             |          *         |
+| **SNUFFLEUPAGUS_VERSION**   | version of Snuffleupagus (php ext)     |          *         |
+| **SHA256_SUM**              | checksum of Nextcloud tarball (sha256) |           *        |
+| **GPG_FINGERPRINT**         | fingerprint of Nextcloud GPG key       |           *        |
+| **UID**                     | user id                                |        1000        |
+| **GID**                     | group id                               |        1000        |
+| **CONFIG_NATIVE**           | native code for hardened_malloc        |        false       |
+| **VARIANT**                 | variant of hardened_malloc (see repo)  |        light       |
 
-## Environment variables (Dockerfile)
+*\* latest known available, likely to change regularly*
+
+For convenience they were put at [the very top of the Dockerfile](https://github.com/Wonderfall/docker-nextcloud/blob/main/Dockerfile#L1-L13) and their usage should be quite explicit if you intend to build this image yourself. If you intend to change `NEXTCLOUD_VERSION`, change `SHA256_SUM` accordingly.
+
+## Environment variables
+
+### Runtime
 
 |          Variable         |         Description         |       Default      |
 | ------------------------- | --------------------------- | ------------------ |
 |     **UPLOAD_MAX_SIZE**   | file upload maximum size    |         10G        |
 |      **APC_SHM_SIZE**     | apc shared memory size      |         128M       |
+|    **OPCACHE_MEM_SIZE**   | opcache available memory    |         128M       |
 |      **MEMORY_LIMIT**     | max php command mem usage   |         512M       |
 |       **CRON_PERIOD**     | cron time interval (min.)   |         5m         |
 |   **CRON_MEMORY_LIMIT**   | cron max memory usage       |         1G         |
 |         **DB_TYPE**       | sqlite3, mysql, pgsql       |       sqlite3      |
-|         **DOMAIN**        | host domain                 |       localhost    |
+|         **DOMAIN**        | host domain                 |      localhost     |
+|      **PHP_HARDENING**    | enables snuffleupagus       |        true        |
 
 Leave them at default if you're not sure what you're doing.
 
-## Environment variables (used by setup.sh)
+### Startup
 
 |          Variable         |         Description         | 
 | ------------------------- | --------------------------- |
 |        **ADMIN_USER**     | admin username              |
 |      **ADMIN_PASSWORD**   | admin password              |
-|         **DB_TYPE**       | sqlit3, mysql, pgsql        |
+|         **DB_TYPE**       | sqlite3, mysql, pgsql       |
 |         **DB_NAME**       | name of the database        |
 |         **DB_USER**       | name of the database user   |
 |       **DB_PASSWORD**     | password of the db user     |
@@ -78,24 +122,29 @@ Leave them at default if you're not sure what you're doing.
 The usage of [Docker secrets](https://docs.docker.com/engine/swarm/secrets/) will be considered in the future, but `config.php` already covers quite a lot.
 
 ## Volumes
+
 |          Variable            |         Description        |
 | -------------------------    | -------------------------- |
 | **/data**                    |         data files         |
 | **/nextcloud/config**        |        config files        |
 | **/nextcloud/apps2**         |       3rd-party apps       |
 | **/nextcloud/themes**        |        custom themes       |
+| **/php/session**             |      PHP session files     |
+
+*Note: mounting `/php/session` isn't required but could be desirable in some circumstances.*
 
 ## Ports
+
 |              Port            |            Use             |
 | -------------------------    | -------------------------- |
 | **8888** (tcp)               |       Nextcloud web        |
-
 
 A reverse proxy like [Traefik](https://doc.traefik.io/traefik/) or [Caddy](https://caddyserver.com/) can be used, and you should consider:
 - Redirecting all HTTP traffic to HTTPS
 - Setting the [HSTS header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-Transport-Security) correctly
 
-## Migration from the legacy image
+## Migration
+
 From now on you'll need to make sure all volumes have proper permissions. The default UID/GID is now 1000, so you'll need to build the image yourself if you want to change that, or you can just change the actual permissions of the volumes using `chown -R 1000:1000`. The flexibility provided by the legacy image came at some cost (performance & security), therefore this feature won't be provided anymore.
 
 Other changes that should be reflected in your configuration files:
@@ -105,5 +154,6 @@ Other changes that should be reflected in your configuration files:
 
 You should edit your `docker-compose.yml` and `config.php` accordingly.
 
-## Get started
+## Usage
+
 *To do.*

@@ -1,14 +1,23 @@
 # Security Policy
 
-## Supported Versions
+## Supported versions
 
-As of now, only the latest stable version will be supported.
+All versions of the Nextcloud community version which still receive updates will be supported 
+and will receive the minor version updates and security patches.
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 21. x   | :white_check_mark: |
+| 24. x   | :white_check_mark: |
+| 23. x   | :white_check_mark: |
+| 22. x   | :white_check_mark: |
 
-## Reporting a Vulnerability
+Please update to the latest version available. Major migrations are always tested before being pushed.
+
+## Automated vulnerability scanning
+
+Uploaded images are regularly scanned for [OS vulnerabilities](https://github.com/Wonderfall/docker-nextcloud/security/code-scanning).
+
+## Reporting a vulnerability
 
 *Upstream* vulnerabilities should be reported to *upstream* projects according to their own security policies.
 
@@ -17,4 +26,4 @@ Regarding vulnerabilities specific to this project:
 - Unsafe defaults
 - Dependencies security updates
 
-Those can be disclosed in private to `wonderfall@pm.me` or `wonderfall:targaryen.house` on Matrix (preferred).
+Those can be disclosed in private to `dev@hoellen.eu`.
