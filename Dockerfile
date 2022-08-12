@@ -11,7 +11,7 @@ ARG UID=1000
 ARG GID=1000
 
 # nextcloud-24.0.4.tar.bz2
-ARG SHA256_SUM="6eaf7598de1e525090e7ceb37236adebe8d5d2a642aa9ee99d3784e0a30f5bef"
+ARG SHA256_SUM="d107426f8e1c193db882a04c844f9bc7e7eeb7c21e46c46197e5154d6d6ac28e"
 
 # Nextcloud Security <security@nextcloud.com> (D75899B9A724937A)
 ARG GPG_FINGERPRINT="2880 6A87 8AE4 23A2 8372  792E D758 99B9 A724 937A"
@@ -49,7 +49,7 @@ RUN apk -U upgrade \
         libzip \
         libsmbclient \
         openldap \
-	      libgomp \
+        libgomp \
         imagemagick \
         zlib \
  && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
