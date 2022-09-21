@@ -1,5 +1,5 @@
 # -------------- Build-time variables --------------
-ARG NEXTCLOUD_VERSION=24.0.5
+ARG NEXTCLOUD_VERSION=25.0.0beta7
 ARG PHP_VERSION=8.1
 ARG NGINX_VERSION=1.22
 
@@ -10,8 +10,8 @@ ARG SNUFFLEUPAGUS_VERSION=0.8.3
 ARG UID=1000
 ARG GID=1000
 
-# nextcloud-24.0.5.tar.bz2
-ARG SHA256_SUM="b22788377ccb9391e7f9eced3f69a9236669aeaab2e0ea5250a73edf5f1ef026"
+# nextcloud-25.0.0beta7.tar.bz2
+ARG SHA256_SUM="e8b5e78a538427b49740762c37e80072065bdf5f819f8077635b296fa3e0b9fe"
 
 # Nextcloud Security <security@nextcloud.com> (D75899B9A724937A)
 ARG GPG_FINGERPRINT="2880 6A87 8AE4 23A2 8372  792E D758 99B9 A724 937A"
@@ -129,8 +129,8 @@ RUN apk --no-cache add \
         pcre2 \
         s6 \
  && NEXTCLOUD_TARBALL="nextcloud-${NEXTCLOUD_VERSION}.tar.bz2" && cd /tmp \
- && wget -q https://download.nextcloud.com/server/releases/${NEXTCLOUD_TARBALL} \
- && wget -q https://download.nextcloud.com/server/releases/${NEXTCLOUD_TARBALL}.asc \
+ && wget -q https://download.nextcloud.com/server/prereleases/${NEXTCLOUD_TARBALL} \
+ && wget -q https://download.nextcloud.com/server/prereleases/${NEXTCLOUD_TARBALL}.asc \
  && wget -q https://nextcloud.com/nextcloud.asc \
  && echo "Verifying both integrity and authenticity of ${NEXTCLOUD_TARBALL}..." \
  && CHECKSUM_STATE=$(echo -n $(echo "${SHA256_SUM}  ${NEXTCLOUD_TARBALL}" | sha256sum -c) | tail -c 2) \
