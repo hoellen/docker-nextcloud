@@ -129,8 +129,8 @@ RUN apk --no-cache add \
         pcre2 \
         s6 \
  && NEXTCLOUD_TARBALL="nextcloud-${NEXTCLOUD_VERSION}.tar.bz2" && cd /tmp \
- && wget -q https://download.nextcloud.com/server/prereleases/${NEXTCLOUD_TARBALL} \
- && wget -q https://download.nextcloud.com/server/prereleases/${NEXTCLOUD_TARBALL}.asc \
+ && wget -q https://download.nextcloud.com/server/releases/${NEXTCLOUD_TARBALL} \
+ && wget -q https://download.nextcloud.com/server/releases/${NEXTCLOUD_TARBALL}.asc \
  && wget -q https://nextcloud.com/nextcloud.asc \
  && echo "Verifying both integrity and authenticity of ${NEXTCLOUD_TARBALL}..." \
  && CHECKSUM_STATE=$(echo -n $(echo "${SHA256_SUM}  ${NEXTCLOUD_TARBALL}" | sha256sum -c) | tail -c 2) \
