@@ -7,9 +7,10 @@ and will receive the minor version updates and security patches.
 
 | Version | Supported          |
 | ------- | ------------------ |
+| 25. x   | :white_check_mark: |
 | 24. x   | :white_check_mark: |
-| 23. x   | :white_check_mark: |
-| 22. x   | :white_check_mark: |
+| 23. x   | :negative_squared_cross_mark: |
+| 22. x   | :negative_squared_cross_mark: |
 
 Please update to the latest version available. Major migrations are always tested before being pushed.
 
