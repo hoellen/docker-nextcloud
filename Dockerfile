@@ -1,17 +1,17 @@
 # -------------- Build-time variables --------------
-ARG NEXTCLOUD_VERSION=25.0.4
+ARG NEXTCLOUD_VERSION=26.0.0
 ARG PHP_VERSION=8.1
 ARG NGINX_VERSION=1.22
 
 ARG ALPINE_VERSION=3.16
 ARG HARDENED_MALLOC_VERSION=11
-ARG SNUFFLEUPAGUS_VERSION=0.8.3
+ARG SNUFFLEUPAGUS_VERSION=0.9.0
 
 ARG UID=1000
 ARG GID=1000
 
-# nextcloud-25.0.4.tar.bz2
-ARG SHA256_SUM="c3251e0083a94303e2d6988b352f3b33082a79a726b30ff746709b0fe869a1a6"
+# nextcloud-26.0.0.tar.bz2
+ARG SHA256_SUM="f163150363aee9366ecb5cd5259bf6756ed4f073cea78b5fa515cada7a0d0c3d"
 
 # Nextcloud Security <security@nextcloud.com> (D75899B9A724937A)
 ARG GPG_FINGERPRINT="2880 6A87 8AE4 23A2 8372  792E D758 99B9 A724 937A"
@@ -64,6 +64,7 @@ RUN apk -U upgrade \
         pcntl \
         pdo_mysql \
         pdo_pgsql \
+        sysvsem \
         zip \
         gmp \
  && pecl install smbclient \
