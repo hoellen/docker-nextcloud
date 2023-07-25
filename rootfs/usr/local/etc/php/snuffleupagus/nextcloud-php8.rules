@@ -8,7 +8,7 @@
 sp.harden_random.enable();
 
 # Disabled XXE
-sp.xxe_protection.enable();
+#sp.xxe_protection.enable();
 
 # Global configuration variables
 # sp.global.secret_key("YOU _DO_ NEED TO CHANGE THIS WITH SOME RANDOM CHARACTERS.");
@@ -34,7 +34,7 @@ sp.sloppy_comparison.enable();
 # https://snuffleupagus.readthedocs.io/features.html#protection-against-cross-site-request-forgery
 sp.cookie.name("PHPSESSID").samesite("lax");
 
-# Nextcloud whitelist (tested with Nextcloud 25.0.0)
+# Nextcloud whitelist (tested with Nextcloud 27.0.1)
 sp.disable_function.function("function_exists").param("function").value("proc_open").filename("/nextcloud/3rdparty/symfony/console/Terminal.php").allow();
 sp.disable_function.function("function_exists").param("function").value("exec").filename("/nextcloud/lib/private/legacy/OC_Helper.php").allow();
 sp.disable_function.function("function_exists").param("function").value("exec").filename("/nextcloud/lib/public/Util.php").allow();
