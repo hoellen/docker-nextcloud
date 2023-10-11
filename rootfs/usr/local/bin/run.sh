@@ -15,6 +15,15 @@ if [ "$PHP_HARDENING" == "true" ] && [ ! -f /usr/local/etc/php/conf.d/snuffleupa
     cp /usr/local/etc/php/snuffleupagus/* /usr/local/etc/php/conf.d
 fi
 
+# Check if database is available
+if [ -n "${DB_TYPE}" ] && [ "${DB_TYPE}" != "sqlite3" ]; then
+  until nc -z "${DB_HOST:-nextcloud-db}" "${DB_PORT:-3306}"
+  do
+    echo "waiting for the database container..."
+    sleep 1
+  done
+fi
+
 # If new install, run setup
 if [ ! -f /nextcloud/config/config.php ]; then
     touch /nextcloud/config/CAN_INSTALL
