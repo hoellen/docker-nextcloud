@@ -3,7 +3,7 @@ name: build
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: [ version-27 ]
   schedule:
     # Build the image regularly (each Friday)
     - cron: '23 04 * * 5'
@@ -53,7 +53,6 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            latest
             ${{ env.FULL_VERSION }}
             ${{ env.MAJOR_VERSION }}
 
