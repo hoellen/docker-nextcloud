@@ -17,7 +17,8 @@ fi
 
 # Check if database is available
 if [ -n "${DB_TYPE}" ] && [ "${DB_TYPE}" != "sqlite3" ]; then
-  until nc -z "${DB_HOST:-nextcloud-db}" "${DB_PORT:-3306}"
+  DB_PORT=${DB_PORT:-$( [ "${DB_TYPE}" = "pgsql" ] && echo 5432 || echo 3306 )}
+  until nc -z "${DB_HOST:-nextcloud-db}" "${DB_PORT}"
   do
     echo "waiting for the database container..."
     sleep 1
