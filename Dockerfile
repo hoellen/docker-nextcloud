@@ -1,5 +1,5 @@
 # -------------- Build-time variables --------------
-ARG NEXTCLOUD_VERSION=28.0.2
+ARG NEXTCLOUD_VERSION=28.0.3
 ARG PHP_VERSION=8.2
 ARG NGINX_VERSION=1.24
 
@@ -10,8 +10,8 @@ ARG SNUFFLEUPAGUS_VERSION=0.10.0
 ARG UID=1000
 ARG GID=1000
 
-# nextcloud-28.0.2.tar.bz2
-ARG SHA256_SUM="de34d6baf3ecceacfdd138e85520cd85e1d2ce6798d9ffa478ac17eb1efa1d08"
+# nextcloud-28.0.3.tar.bz2
+ARG SHA256_SUM="9ed413c0de16f5b033ceeffcca99c0d61fc698dbeb8db851ac9adf9eef951906"
 
 # Nextcloud Security <security@nextcloud.com> (D75899B9A724937A)
 ARG GPG_FINGERPRINT="2880 6A87 8AE4 23A2 8372  792E D758 99B9 A724 937A"
