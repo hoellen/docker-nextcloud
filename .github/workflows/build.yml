@@ -3,7 +3,9 @@ name: build
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches: 
+     - master
+     - version-* 
   schedule:
     # Build the image regularly (each Friday)
     - cron: '23 04 * * 5'
@@ -27,6 +29,12 @@ jobs:
 
       - name: Extract version for tags
         run: |
+          if [[ "$GITHUB_REF" == refs/heads/* ]]; then
+            BRANCH="${GITHUB_REF#refs/heads/}"
+            if [ "$BRANCH" = "master" ]; then
+              echo "BRANCH_VERSION=latest" >> $GITHUB_ENV
+            fi
+          fi
           echo "FULL_VERSION=$(grep -oP '(?<=NEXTCLOUD_VERSION=).*' Dockerfile | head -c6)" >> $GITHUB_ENV
           echo "MAJOR_VERSION=$(grep -oP '(?<=NEXTCLOUD_VERSION=).*' Dockerfile | head -c2)" >> $GITHUB_ENV
 
@@ -53,7 +61,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            latest
+            ${{ env.BRANCH_VERSION }}
             ${{ env.FULL_VERSION }}
             ${{ env.MAJOR_VERSION }}
 
