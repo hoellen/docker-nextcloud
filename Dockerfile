@@ -43,6 +43,7 @@ RUN apk -U upgrade \
         gmp \
         icu \
         libjpeg-turbo \
+        librsvg \
         libpq \
         libpq \
         libwebp \
