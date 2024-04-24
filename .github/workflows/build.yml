@@ -3,7 +3,9 @@ name: build
 on:
   workflow_dispatch:
   push:
-    branches: [ master ]
+    branches:
+      - master
+      - version-*
   schedule:
     # Build the image regularly (each Friday)
     - cron: '23 04 * * 5'
@@ -27,8 +29,11 @@ jobs:
 
       - name: Extract version for tags
         run: |
-          echo "FULL_VERSION=$(grep -oP '(?<=NEXTCLOUD_VERSION=).*' Dockerfile | head -c6)" >> $GITHUB_ENV
-          echo "MAJOR_VERSION=$(grep -oP '(?<=NEXTCLOUD_VERSION=).*' Dockerfile | head -c2)" >> $GITHUB_ENV
+          BRANCH="${GITHUB_REF#refs/heads/}"
+          VERSION=$(grep -oP '(?<=NEXTCLOUD_VERSION=).*' Dockerfile)
+          [ "$BRANCH" = "master" ] && echo "BRANCH_VERSION=latest" >> $GITHUB_ENV
+          echo "FULL_VERSION=${VERSION:0:7}" >> $GITHUB_ENV
+          echo "MAJOR_VERSION=${VERSION:0:2}" >> $GITHUB_ENV
 
       - name: Install cosign
         if: github.event_name != 'pull_request'
@@ -53,7 +58,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            latest
+            ${{ env.BRANCH_VERSION }}
             ${{ env.FULL_VERSION }}
             ${{ env.MAJOR_VERSION }}
 
