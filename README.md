@@ -116,6 +116,7 @@ Leave them at default if you're not sure what you're doing.
 |         **DB_USER**       | name of the database user   |
 |       **DB_PASSWORD**     | password of the db user     |
 |         **DB_HOST**       | database host               |
+|         **DB_PORT**       | database port               |
 
 `ADMIN_USER` and `ADMIN_PASSWORD` are optional and mainly for niche purposes. Obviously, avoid clear text passwords. Once `setup.sh` has run for the first time, these variables can be removed. You should then edit `/nextcloud/config/config.php` directly if you want to change something in your configuration.
 

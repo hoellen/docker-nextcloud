@@ -42,6 +42,12 @@ cat > /nextcloud/config/autoconfig.php <<EOF;
   'dbuser'        => '${DB_USER:-nextcloud}',
   'dbpass'        => '${DB_PASSWORD:-password}',
   'dbhost'        => '${DB_HOST:-nextcloud-db}',
+EOF
+if [[ ! -z "$DB_PORT"  ]]; then
+  cat >> /nextcloud/config/autoconfig.php <<EOF;
+  'dbport'        => '${DB_PORT}',
+EOF
+cat > /nextcloud/config/autoconfig.php <<EOF;
   'dbtableprefix' => 'oc_',
 EOF
 if [[ ! -z "$ADMIN_USER"  ]]; then
