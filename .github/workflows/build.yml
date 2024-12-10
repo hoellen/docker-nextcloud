@@ -6,6 +6,8 @@ on:
     branches:
       - master
       - version-*
+  # Run tests for any PRs
+  pull_request:
   schedule:
     # Build the image regularly (each Friday)
     - cron: '23 04 * * 5'
