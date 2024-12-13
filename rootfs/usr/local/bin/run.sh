@@ -34,4 +34,4 @@ else
 fi
 
 # Run processes
-exec /bin/s6-svscan /etc/s6.d
+exec /usr/bin/s6-svscan /etc/s6.d
