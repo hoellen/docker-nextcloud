@@ -33,5 +33,9 @@ else
     occ upgrade
 fi
 
-# Run processes
-exec /bin/s6-svscan /etc/s6.d
+# Run processes and check for usr-merge
+if [ -x /usr/bin/s6-svscan ]; then
+    exec /usr/bin/s6-svscan /etc/s6.d
+else
+    exec /bin/s6-svscan /etc/s6.d
+fi
