@@ -70,6 +70,13 @@ jobs:
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test
           context: .
 
+      - name: Test Docker image
+        id: test-image
+        run: |
+          docker run -d -p 8888:8888 --name nextcloud --rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test && \
+          docker exec nextcloud occ status && \
+          nc -z localhost 8888
+
       - name: Push Docker image
         id: push
         if: github.event_name != 'pull_request'
