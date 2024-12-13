@@ -70,6 +70,7 @@ jobs:
 
       - name: Push Docker image
         id: push
+        if: github.event_name != 'pull_request'
         uses: docker/build-push-action@v2
         with:
           context: .
