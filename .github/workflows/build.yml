@@ -62,10 +62,12 @@ jobs:
             ${{ env.FULL_VERSION }}
             ${{ env.MAJOR_VERSION }}
 
-      - name: Build Docker image
+      - name: Build and export Docker image to Docker
         id: build
         uses: docker/build-push-action@v2
         with:
+          load: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:test
           context: .
 
       - name: Push Docker image
