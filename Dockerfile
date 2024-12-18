@@ -18,7 +18,7 @@ ARG GPG_FINGERPRINT="2880 6A87 8AE4 23A2 8372  792E D758 99B9 A724 937A"
 # ---------------------------------------------------
 
 ### Build PHP base
-FROM docker.io/library/php:${PHP_VERSION}-fpm-alpine${ALPINE_VERSION} as base
+FROM docker.io/library/php:${PHP_VERSION}-fpm-alpine${ALPINE_VERSION} AS base
 
 ARG SNUFFLEUPAGUS_VERSION
 
@@ -88,7 +88,7 @@ RUN apk -U upgrade \
 
 ### Build Hardened Malloc
 ARG ALPINE_VERSION
-FROM docker.io/library/alpine:${ALPINE_VERSION} as build-malloc
+FROM docker.io/library/alpine:${ALPINE_VERSION} AS build-malloc
 
 ARG HARDENED_MALLOC_VERSION
 ARG CONFIG_NATIVE=false
@@ -102,11 +102,11 @@ RUN apk --no-cache add build-base git gnupg && cd /tmp \
 
 
 ### Fetch nginx
-FROM docker.io/library/nginx:${NGINX_VERSION}-alpine as nginx
+FROM docker.io/library/nginx:${NGINX_VERSION}-alpine AS nginx
 
 
 ### Build Nextcloud (production environemnt)
-FROM base as nextcloud
+FROM base AS nextcloud
 
 COPY --from=nginx /usr/sbin/nginx /usr/sbin/nginx
 COPY --from=nginx /etc/nginx /etc/nginx
