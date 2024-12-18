@@ -22,7 +22,7 @@ FROM docker.io/library/php:${PHP_VERSION}-fpm-alpine${ALPINE_VERSION} AS base
 
 ARG SNUFFLEUPAGUS_VERSION
 
-ENV IMAGICK_SHA 28f27044e435a2b203e32675e942eb8de620ee58
+ENV IMAGICK_SHA=28f27044e435a2b203e32675e942eb8de620ee58
 
 RUN apk -U upgrade \
  && apk add -t build-deps \
