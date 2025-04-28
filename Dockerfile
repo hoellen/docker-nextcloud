@@ -22,8 +22,6 @@ FROM docker.io/library/php:${PHP_VERSION}-fpm-alpine${ALPINE_VERSION} AS base
 
 ARG SNUFFLEUPAGUS_VERSION
 
-ENV IMAGICK_SHA=28f27044e435a2b203e32675e942eb8de620ee58
-
 RUN apk -U upgrade \
  && apk add -t build-deps \
         $PHPIZE_DEPS \
@@ -74,8 +72,7 @@ RUN apk -U upgrade \
  && pecl install smbclient \
  && pecl install APCu \
  && pecl install redis \
- && curl -L -o /tmp/imagick.tar.gz https://github.com/Imagick/imagick/archive/${IMAGICK_SHA}.tar.gz && tar --strip-components=1 -xf /tmp/imagick.tar.gz && phpize && ./configure && make && make install \
- && apk add --no-cache --virtual .imagick-runtime-deps imagemagick \
+ && pecl install imagick \
  && docker-php-ext-enable \
         smbclient \
         redis \
