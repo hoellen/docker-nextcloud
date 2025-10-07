@@ -62,12 +62,28 @@ jobs:
             ${{ env.FULL_VERSION }}
             ${{ env.MAJOR_VERSION }}
 
-      - name: Build and push Docker image
-        id: build-and-push
+      - name: Build and export Docker image to Docker
+        id: build
+        uses: docker/build-push-action@v2
+        with:
+          load: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:testing
+          context: .
+
+      - name: Test Docker image
+        id: test
+        run: |
+          docker run -d -p 8888:8888 --name nextcloud --rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:testing && \
+          docker exec nextcloud occ status && \
+          nc -z localhost 8888
+
+      - name: Push Docker image
+        id: push
+        if: github.event_name != 'pull_request'
         uses: docker/build-push-action@v2
         with:
           context: .
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -75,4 +91,4 @@ jobs:
         if: ${{ github.event_name != 'pull_request' }}
         env:
           COSIGN_EXPERIMENTAL: "true"
-        run: cosign sign --yes ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ steps.build-and-push.outputs.digest }}
+        run: cosign sign --yes ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@${{ steps.push.outputs.digest }}
