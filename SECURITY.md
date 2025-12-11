@@ -2,14 +2,14 @@
 
 ## Supported versions
 
-All versions of the Nextcloud community version which still receive updates will be supported 
+All versions of the Nextcloud community version which still receive updates will be supported
 and will receive the minor version updates and security patches.
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 32. x   | :white_check_mark: |
-| 31. x   | :white_check_mark: |
-| 30. x   | :negative_squared_cross_mark |
+| Version | Supported                     |
+| ------- | ----------------------------- |
+| 32. x   | :white_check_mark:            |
+| 31. x   | :white_check_mark:            |
+| 30. x   | :negative_squared_cross_mark: |
 | 29. x   | :negative_squared_cross_mark: |
 | 28. x   | :negative_squared_cross_mark: |
 | 27. x   | :negative_squared_cross_mark: |
@@ -28,9 +28,10 @@ Uploaded images are regularly scanned for [OS vulnerabilities](https://github.co
 
 ## Reporting a vulnerability
 
-*Upstream* vulnerabilities should be reported to *upstream* projects according to their own security policies.
+_Upstream_ vulnerabilities should be reported to _upstream_ projects according to their own security policies.
 
 Regarding vulnerabilities specific to this project:
+
 - Faulty configuration files
 - Unsafe defaults
 - Dependencies security updates
