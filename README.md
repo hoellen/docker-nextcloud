@@ -58,8 +58,8 @@ Verifying the signature isn't a requirement, and might not be as seamless as usi
 ## Tags
 
 - `latest` : latest Nextcloud version
-- `x` : latest Nextcloud x.x (e.g. `32`)
-- `x.x.x` : Nextcloud x.x.x (e.g. `32.0.0`)
+- `x` : latest Nextcloud x.x (e.g. `33`)
+- `x.x.x` : Nextcloud x.x.x (e.g. `33.0.0`)
 
 You can always have a glance [here](https://github.com/users/hoellen/packages/container/package/nextcloud).
 Only the **latest stable version** will be maintained by myself.

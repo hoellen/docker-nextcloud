@@ -7,6 +7,7 @@ and will receive the minor version updates and security patches.
 
 | Version | Supported                     |
 | ------- | ----------------------------- |
+| 33. x   | :white_check_mark:            |
 | 32. x   | :white_check_mark:            |
 | 31. x   | :white_check_mark:            |
 | 30. x   | :negative_squared_cross_mark: |
