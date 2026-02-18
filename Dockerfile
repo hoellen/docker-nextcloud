@@ -1,17 +1,17 @@
 # -------------- Build-time variables --------------
-ARG NEXTCLOUD_VERSION=32.0.6
-ARG PHP_VERSION=8.3
+ARG NEXTCLOUD_VERSION=33.0.0
+ARG PHP_VERSION=8.4
 ARG NGINX_VERSION=1.28
 
-ARG ALPINE_VERSION=3.21
-ARG HARDENED_MALLOC_VERSION=11
-ARG SNUFFLEUPAGUS_VERSION=0.10.0
+ARG ALPINE_VERSION=3.23
+ARG HARDENED_MALLOC_VERSION=16
+ARG SNUFFLEUPAGUS_VERSION=0.13.0
 
 ARG UID=1000
 ARG GID=1000
 
-# nextcloud-32.0.6.tar.bz2
-ARG SHA256_SUM="44bc33fc0e31a650bb520bb123c0aaa6519b7f7b9386133d561ade77e53f7130"
+# nextcloud-33.0.0.tar.bz2
+ARG SHA256_SUM="6f7730902269c879f9f2ad4aa0a227cb16b5408ee46f093f68bd32633f741abf"
 
 # Nextcloud Security <security@nextcloud.com> (D75899B9A724937A)
 ARG GPG_FINGERPRINT="2880 6A87 8AE4 23A2 8372  792E D758 99B9 A724 937A"
@@ -91,15 +91,16 @@ ARG HARDENED_MALLOC_VERSION
 ARG CONFIG_NATIVE=false
 ARG VARIANT=light
 
-RUN apk --no-cache add build-base git gnupg && cd /tmp \
- && wget -q https://github.com/thestinger.gpg && gpg --import thestinger.gpg \
+RUN apk --no-cache add build-base git openssh && cd /tmp \
+ && wget -q -O - https://github.com/thestinger.keys | while read -r key; do echo "thestinger@github.com $key"; done > allowed_signers \
+ && git config --global gpg.ssh.allowedSignersFile /tmp/allowed_signers \
  && git clone --depth 1 --branch ${HARDENED_MALLOC_VERSION} https://github.com/GrapheneOS/hardened_malloc \
  && cd hardened_malloc && git verify-tag $(git describe --tags) \
  && make CONFIG_NATIVE=${CONFIG_NATIVE} VARIANT=${VARIANT}
 
 
 ### Fetch nginx
-FROM docker.io/library/nginx:${NGINX_VERSION}-alpine AS nginx
+FROM docker.io/library/nginx:${NGINX_VERSION}-alpine${ALPINE_VERSION} AS nginx
 
 
 ### Build Nextcloud (production environemnt)
