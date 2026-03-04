@@ -94,7 +94,7 @@ ARG VARIANT=light
 RUN apk --no-cache add build-base git openssh && cd /tmp \
  && wget -q -O - https://github.com/thestinger.keys | while read -r key; do echo "thestinger@github.com $key"; done > allowed_signers \
  && git config --global gpg.ssh.allowedSignersFile /tmp/allowed_signers \
- && git clone --depth 1 https://github.com/GrapheneOS/hardened_malloc && cd hardened_malloc \
+ && git clone https://github.com/GrapheneOS/hardened_malloc && cd hardened_malloc \
  && git checkout refs/tags/${HARDENED_MALLOC_VERSION} && git verify-tag $(git describe --tags) \
  && make CONFIG_NATIVE=${CONFIG_NATIVE} VARIANT=${VARIANT}
 
