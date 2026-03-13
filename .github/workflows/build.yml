@@ -25,7 +25,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v5
 
       - name: Extract version for tags
         run: |
@@ -42,11 +42,11 @@ jobs:
           cosign-release: 'v2.2.2'
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@v3
 
       - name: Login to registry
         if: github.event_name != 'pull_request'
-        uses: docker/login-action@v1
+        uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.repository_owner }}
@@ -54,7 +54,7 @@ jobs:
 
       - name: Set Docker metadata
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v5
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
@@ -64,7 +64,7 @@ jobs:
 
       - name: Build and export Docker image to Docker
         id: build
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v6
         with:
           load: true
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:testing
@@ -80,7 +80,7 @@ jobs:
       - name: Push Docker image
         id: push
         if: github.event_name != 'pull_request'
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v6
         with:
           context: .
           push: true
