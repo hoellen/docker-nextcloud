@@ -35,7 +35,7 @@ ___
 - Includes **Snuffleupagus**, [a PHP security module](https://github.com/jvoisin/snuffleupagus).
 - Includes a simple **built-in cron** system.
 - Much easier to maintain thanks to multi-stages build.
-- Does not include imagick, samba, etc. by default.
+- Includes imagick and smbclient for extended file handling and SMB/CIFS support.
 
 You're free to make your own image based on this one if you want a specific feature. Uncommon features won't be included as they can increase attack surface: this image intends to stay **minimal**, but **functional enough** to cover basic needs.
 
