@@ -72,7 +72,7 @@ jobs:
         id: test
         run: |
           docker run -d -p 8888:8888 --name nextcloud --rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:testing && \
-          docker exec nextcloud occ status && \
+          sleep 5 && docker exec nextcloud occ status && \
           nc -z localhost 8888
 
       - name: Push Docker image
