@@ -1,6 +1,6 @@
 # -------------- Build-time variables --------------
 ARG NEXTCLOUD_VERSION=34.0.0
-ARG PHP_VERSION=8.4
+ARG PHP_VERSION=8.5
 ARG NGINX_VERSION=1.30
 
 ARG ALPINE_VERSION=3.23
@@ -62,7 +62,6 @@ RUN apk -U upgrade \
         bz2 \
         intl \
         ldap \
-        opcache \
         pcntl \
         pdo_mysql \
         pdo_pgsql \

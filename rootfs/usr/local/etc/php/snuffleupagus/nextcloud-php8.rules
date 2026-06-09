@@ -15,7 +15,10 @@ sp.harden_random.enable();
 
 # Globally activate strict mode
 # https://www.php.net/manual/en/language.types.declarations.php#language.types.declarations.strict
-sp.global_strict.enable();
+# Disabled: PHP 8.5 expanded strict_types=1 to reject implicit object->string
+# coercion via __toString(). This breaks symfony/console Helper::substr() which
+# returns UnicodeString from a :string method. No per-file exclusion available.
+# sp.global_strict.enable();
 
 # Prevent unserialize-related exploits
 # sp.unserialize_hmac.enable();
@@ -34,7 +37,7 @@ sp.sloppy_comparison.enable();
 # https://snuffleupagus.readthedocs.io/features.html#protection-against-cross-site-request-forgery
 sp.cookie.name("PHPSESSID").samesite("lax");
 
-# Nextcloud whitelist (tested with Nextcloud 27.0.1)
+# Nextcloud whitelist (tested with Nextcloud 34.0.0)
 sp.disable_function.function("function_exists").param("function").value("proc_open").filename("/nextcloud/3rdparty/symfony/console/Terminal.php").allow();
 sp.disable_function.function("function_exists").param("function").value("exec").filename("/nextcloud/lib/private/legacy/OC_Helper.php").allow();
 sp.disable_function.function("function_exists").param("function").value("exec").filename("/nextcloud/lib/public/Util.php").allow();
@@ -48,8 +51,8 @@ sp.disable_function.function("ini_get").param("option").value("allow_url_fopen")
 sp.disable_function.function("exec").param("command").value("apachectl -M | grep mpm").filename("/nextcloud/apps2/spreed/lib/Settings/Admin/AdminSettings.php").allow();
 
 # Nextcloud inherently enables XXE-Protection since 27.0.1, therefore, drop setting a new external entity loader
-sp.disable_function.function("libxml_set_external_entity_loader").filename("/nextcloud/lib/base.php").allow(); 
-sp.disable_function.function("libxml_set_external_entity_loader").drop(); 
+sp.disable_function.function("libxml_set_external_entity_loader").filename("/nextcloud/lib/base.php").allow();
+sp.disable_function.function("libxml_set_external_entity_loader").drop();
 
 # Harden the `chmod` function (0777 (oct = 511, 0666 = 438)
 sp.disable_function.function("chmod").param("permissions").value("438").drop();
