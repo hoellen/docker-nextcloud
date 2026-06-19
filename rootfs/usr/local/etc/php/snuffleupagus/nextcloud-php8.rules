@@ -52,6 +52,7 @@ sp.disable_function.function("exec").param("command").value("apachectl -M | grep
 
 # Nextcloud inherently enables XXE-Protection since 27.0.1, therefore, drop setting a new external entity loader
 sp.disable_function.function("libxml_set_external_entity_loader").filename("/nextcloud/lib/base.php").allow();
+sp.disable_function.function("libxml_set_external_entity_loader").filename("/nextcloud/apps2/user_saml/lib/Helper/TXmlHelper.php").allow();
 sp.disable_function.function("libxml_set_external_entity_loader").drop();
 
 # Harden the `chmod` function (0777 (oct = 511, 0666 = 438)
