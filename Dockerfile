@@ -53,6 +53,7 @@ RUN apk -U upgrade \
         libgomp \
         imagemagick \
         zlib \
+        imagemagick-heic \
  && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
  && docker-php-ext-configure ldap \
  && docker-php-ext-install -j "$(nproc)" \
