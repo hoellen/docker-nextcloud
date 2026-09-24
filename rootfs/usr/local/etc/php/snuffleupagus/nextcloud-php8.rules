@@ -77,7 +77,7 @@ sp.disable_function.function("extract").param("array").value_r("^_").drop()
 sp.disable_function.function("extract").param("flags").value("0").drop()
 
 # This is also burned:
-# ini_set('open_basedir','..');chdir('..');…;chdir('..');ini_set('open_basedir','/');echo(file_get_contents('/etc/passwd'));
+# ini_set('open_basedir','..');chdir('..');...;chdir('..');ini_set('open_basedir','/');echo(file_get_contents('/etc/passwd'));
 # Since we have no way of matching on two parameters at the same time, we're
 # blocking calls to open_basedir altogether: nobody is using it via ini_set anyway.
 # Moreover, there are non-public bypasses that are also using this vector ;)
@@ -132,6 +132,10 @@ sp.disable_function.function("is_callable").param("value").value("passthru").dro
 sp.disable_function.function("curl_setopt").param("value").value("1").allow();
 sp.disable_function.function("curl_setopt").param("value").value("2").allow();
 sp.disable_function.function("curl_setopt").param("value").value("TRUE").allow();
+# Turning the verification off is only legitimate for the setup checks that request the
+# instance itself, `OCP\SetupCheck\CheckServerResponseTrait` uses `verify => false` for them
+sp.disable_function.function("OC\\SetupCheck\\SetupCheckManager::run>curl_setopt").param("option").value("64").allow();
+sp.disable_function.function("OC\\SetupCheck\\SetupCheckManager::run>curl_setopt").param("option").value("81").allow();
 # `81` is SSL_VERIFYHOST and `64` SSL_VERIFYPEER
 sp.disable_function.function("curl_setopt").param("option").value("64").drop().alias("Please don't turn CURLOPT_SSL_VERIFYCLIENT off.");
 sp.disable_function.function("curl_setopt").param("option").value("81").drop().alias("Please don't turn CURLOPT_SSL_VERIFYHOST off.");
