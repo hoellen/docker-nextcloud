@@ -1,9 +1,8 @@
 # -------------- Build-time variables --------------
 ARG NEXTCLOUD_VERSION=35.0.3
-ARG PHP_VERSION=8.5
-ARG NGINX_VERSION=1.30
-
-ARG ALPINE_VERSION=3.24
+ARG PHP_IMAGE=docker.io/library/php:8.5-fpm-alpine3.24
+ARG ALPINE_IMAGE=docker.io/library/alpine:3.24
+ARG NGINX_IMAGE=docker.io/library/nginx:1.30-alpine3.24
 ARG HARDENED_MALLOC_VERSION=14
 ARG SNUFFLEUPAGUS_VERSION=0.14.0
 
@@ -18,7 +17,7 @@ ARG GPG_FINGERPRINT="2880 6A87 8AE4 23A2 8372  792E D758 99B9 A724 937A"
 # ---------------------------------------------------
 
 ### Build PHP base
-FROM docker.io/library/php:${PHP_VERSION}-fpm-alpine${ALPINE_VERSION} AS base
+FROM ${PHP_IMAGE} AS base
 
 ARG SNUFFLEUPAGUS_VERSION
 
@@ -83,8 +82,7 @@ RUN apk -U upgrade \
 
 
 ### Build Hardened Malloc
-ARG ALPINE_VERSION
-FROM docker.io/library/alpine:${ALPINE_VERSION} AS build-malloc
+FROM ${ALPINE_IMAGE} AS build-malloc
 
 ARG HARDENED_MALLOC_VERSION
 ARG CONFIG_NATIVE=false
@@ -99,7 +97,7 @@ RUN apk --no-cache add build-base git openssh && cd /tmp \
 
 
 ### Fetch nginx
-FROM docker.io/library/nginx:${NGINX_VERSION}-alpine${ALPINE_VERSION} AS nginx
+FROM ${NGINX_IMAGE} AS nginx
 
 
 ### Build Nextcloud (production environemnt)
