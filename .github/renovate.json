@@ -1,0 +1,37 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "packageRules": [
+    {
+      "description": "Pin and update PHP, Nginx, and Alpine image digests without changing their tags",
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "docker.io/library/php",
+        "docker.io/library/nginx",
+        "docker.io/library/alpine"
+      ],
+      "pinDigests": true
+    },
+    {
+      "description": "Keep configured PHP, Nginx, and Alpine version tags stable; allow digest updates",
+      "matchDatasources": [
+        "docker"
+      ],
+      "matchPackageNames": [
+        "docker.io/library/php",
+        "docker.io/library/nginx",
+        "docker.io/library/alpine"
+      ],
+      "matchUpdateTypes": [
+        "major",
+        "minor",
+        "patch"
+      ],
+      "enabled": false
+    }
+  ]
+}
