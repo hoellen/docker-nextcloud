@@ -36,6 +36,7 @@ ___
 - Includes a simple **built-in cron** system.
 - Much easier to maintain thanks to multi-stages build.
 - Includes imagick and smbclient for extended file handling and SMB/CIFS support.
+- Supports HEIC decoding through ImageMagick. To generate HEIC previews, add Nextcloud's `OC\Preview\HEIC` provider to `enabledPreviewProviders` in `config.php`. When setting this option, retain the standard providers: copy their version-specific defaults from `config/config.sample.php` in the matching Nextcloud release (inside the container, inspect them with `grep -n -A20 "enabledPreviewProviders" /nextcloud/config/config.sample.php`) and append `OC\Preview\HEIC`. `occ config:system:get enabledPreviewProviders` shows only explicitly configured values, not defaults. Defining this option replaces the default list. See the [Nextcloud documentation for `enabledPreviewProviders`](https://docs.nextcloud.com/server/stable/admin_manual/configuration_server/config_sample_php_parameters.html#enabledpreviewproviders).
 
 You're free to make your own image based on this one if you want a specific feature. Uncommon features won't be included as they can increase attack surface: this image intends to stay **minimal**, but **functional enough** to cover basic needs.
 
