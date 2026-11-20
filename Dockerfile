@@ -52,6 +52,7 @@ RUN apk -U upgrade \
         openldap \
         libgomp \
         imagemagick \
+        imagemagick-heic \
         zlib \
  && docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
  && docker-php-ext-configure ldap \
